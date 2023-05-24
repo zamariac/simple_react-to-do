@@ -1,37 +1,61 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect, useRef } from 'react';
 
 function TodoForm(props) {
+  const [input, setInput] = useState(props.edit ? props.edit.value : '');
 
-    const [input, setInput] = useState('');
+  const inputRef = useRef(null);
 
-    const handleChange = e => {
-        setInput(e.target.value);
-    };
+  useEffect(() => {
+    inputRef.current.focus();
+  });
 
-    const handleSubmit = e => {
-        e.preventDefault();
+  const handleChange = e => {
+    setInput(e.target.value);
+  };
 
-        props.onSubmit({
-            id: Math.floor(Math.random() * 10000),
-            text: input,
-        });
+  const handleSubmit = e => {
+    e.preventDefault();
 
-        setInput('');
-    };
+    props.onSubmit({
+      id: Math.floor(Math.random() * 10000),
+      text: input
+    });
+    setInput('');
+  };
 
   return (
-    <form className="todo-form" onSubmit={handleSubmit}>
-        <input 
-            type="text" 
-            placeholder="Add a todo" 
+    <form onSubmit={handleSubmit} className='todo-form'>
+      {props.edit ? (
+        <>
+          <input
+            placeholder='Update your task'
             value={input}
-            name="text"
-            className="todo-input" 
             onChange={handleChange}
-        />
-        <button className="todo-button">Add to do</button>
+            name='text'
+            ref={inputRef}
+            className='todo-input edit'
+          />
+          <button onClick={handleSubmit} className='todo-button edit'>
+            Update Task
+          </button>
+        </>
+      ) : (
+        <>
+          <input
+            placeholder='Add a task'
+            value={input}
+            onChange={handleChange}
+            name='text'
+            className='todo-input'
+            ref={inputRef}
+          />
+          <button onClick={handleSubmit} className='todo-button'>
+            Add task
+          </button>
+        </>
+      )}
     </form>
   );
 }
 
-export default TodoForm
+export default TodoForm;

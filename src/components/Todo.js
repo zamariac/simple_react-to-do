@@ -1,5 +1,6 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import TodoList from './TodoList'
+import { BsCheckCircle } from 'react-icons/bs'
 import { RiCloseCircleLine } from 'react-icons/ri'
 import { TiEdit } from 'react-icons/ti'
 import TodoForm from './TodoForm'
@@ -32,6 +33,10 @@ function Todo({ todos, completeTodo, removeTodo, updateTodo }) {
             {todo.text}
         </div>
         <div className="icons">
+            <BsCheckCircle
+            onClick= {() => completeTodo(todo.id)}
+            className="complete-icon"
+            />
             <RiCloseCircleLine
             onClick= {() => removeTodo(todo.id)}
             className="delete-icon"
